@@ -1,0 +1,21 @@
+- name: Installer dépendances
+  apt:
+    name: [git, nodejs, npm]
+    state: present
+    update_cache: yes
+
+- name: Cloner l’application
+  git:
+    repo: "https://github.com/<ton_user>/<ton_repo>.git"
+    dest: /var/www/app
+    version: HEAD
+
+- name: Lancer le build
+  command: npm install
+  args:
+    chdir: /var/www/app
+
+- name: Déployer la page de confirmation
+  template:
+    src: index.html.j2
+    dest: /var/www/app/index.html
